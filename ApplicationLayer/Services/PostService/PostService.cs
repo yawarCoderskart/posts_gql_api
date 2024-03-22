@@ -12,12 +12,12 @@ namespace Posts_graphql.Application.Services
         {
             _PostRepository = PostRepository;
         }
-      
-        public async Task<List<Post>> GetPostById(int? postId)
+
+        public async Task<List<Post>> GetPost(int? postId)
         {
             try
             {
-                return await _PostRepository.GetPostById(postId);
+                return await _PostRepository.GetPost(postId);
             }
             catch (Exception ex)
             {
@@ -29,6 +29,15 @@ namespace Posts_graphql.Application.Services
         {
             try
             {
+                if (newPost.Id == null)
+                {
+                    newPost.FlgDelete = false;
+                    newPost.AddedDateTime = DateTime.Now;
+                }
+                else
+                {
+                    newPost.UpdatedDateTime = DateTime.Now;
+                }
                 return await _PostRepository.AddEditPost(newPost);
             }
             catch (Exception ex)
@@ -39,6 +48,6 @@ namespace Posts_graphql.Application.Services
         }
 
 
-      
+
     }
 }

@@ -14,12 +14,13 @@ namespace Posts_graphql.Application.Services
         }
         public async Task<UserProfile> LoginUserAsync(string email, string password)
         {
-            var user =  await _userRepository.LoginUserAsync(email);
-            if(user != null)
+            var user = await _userRepository.LoginUserAsync(email);
+            if (user != null)
             {
-                 if(GenericUtil.VerifyPassword( password , user.Password)){
+                if (GenericUtil.VerifyPassword(password, user.Password))
+                {
                     return user;
-                 }
+                }
             }
             return null;
         }
@@ -53,7 +54,14 @@ namespace Posts_graphql.Application.Services
         public async Task<UserProfile> RegisterUserAsync(UserProfile newUser)
         {
             newUser.FlgDelete = false;
-            newUser.AddedDateTime = DateTime.Now;
+            if (newUser.Id == null)
+            {
+                newUser.AddedDateTime = DateTime.Now;
+            }
+            else
+            {
+                newUser.UpdatedDateTime = DateTime.Now;
+            }
             newUser.Password = GenericUtil.HashPassword(newUser.Password);
             try
             {
@@ -66,6 +74,6 @@ namespace Posts_graphql.Application.Services
                 return null;
             }
         }
-    
+
     }
 }

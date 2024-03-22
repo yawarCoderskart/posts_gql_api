@@ -59,7 +59,7 @@ public class UserRepository : IUserRepository
     {
         try
         {
-            var user = await dbContext.User.FirstOrDefaultAsync(u => u.Email == email);
+            var user = await dbContext.User.FirstOrDefaultAsync(u => u.Email == email && u.FlgDelete == false);
             if(user != null){
                 return true;
             }

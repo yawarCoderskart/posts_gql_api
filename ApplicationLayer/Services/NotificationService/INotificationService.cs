@@ -5,7 +5,7 @@ namespace Posts_graphql.Application.Services
 {
     public interface INotificationService
     {
-        Task<List<Notification>> GetNotificationById(int? NotificationId);
+        Task<List<Notification>> GetNotification(int? NotificationId);
         Task<Notification> AddEditNotification(Notification newNotification);
     }
 

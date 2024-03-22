@@ -13,11 +13,11 @@ namespace Posts_graphql.Application.Services
             _NotificationRepository = NotificationRepository;
         }
       
-        public async Task<List<Notification>> GetNotificationById(int? NotificationId)
+        public async Task<List<Notification>> GetNotification(int? NotificationId)
         {
             try
             {
-                return await _NotificationRepository.GetNotificationById(NotificationId);
+                return await _NotificationRepository.GetNotification(NotificationId);
             }
             catch (Exception ex)
             {
@@ -29,6 +29,15 @@ namespace Posts_graphql.Application.Services
         {
             try
             {
+                 if (newNotification.Id == null)
+                {
+                    newNotification.FlgDelete = false;
+                    newNotification.AddedDateTime = DateTime.Now;
+                }
+                else
+                {
+                    newNotification.UpdatedDateTime = DateTime.Now;
+                }
                 return await _NotificationRepository.AddEditNotification(newNotification);
             }
             catch (Exception ex)
