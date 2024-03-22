@@ -14,7 +14,7 @@ public class NotificationRepository : INotificationRepository
         dbContext = contextFactory.CreateDbContext();
     }
 
-    public async Task<List<Notification>> GetNotificationById(int? NotificationId)
+    public async Task<List<Notification>> GetNotification(int? NotificationId)
     {
         try
         {
@@ -38,8 +38,19 @@ public class NotificationRepository : INotificationRepository
     {
         try
         {
-            dbContext.Notification.Add(newNotification);
-            await dbContext.SaveChangesAsync();
+            if (newNotification.Id == null)
+            {
+                dbContext.Notification.Add(newNotification);
+                await dbContext.SaveChangesAsync();
+            }
+            else
+            {
+                var existingNotification = await dbContext.Notification.FindAsync(newNotification.Id);
+                newNotification.AddedBy = existingNotification.AddedBy;
+                newNotification.AddedDateTime = existingNotification.AddedDateTime;
+                dbContext.Entry(existingNotification).CurrentValues.SetValues(newNotification);
+                await dbContext.SaveChangesAsync();
+            }
             return newNotification;
         }
         catch (Exception ex)

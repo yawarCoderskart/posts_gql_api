@@ -5,7 +5,7 @@ namespace Posts_graphql.Application.Services
 {
     public interface IPostService
     {
-        Task<List<Post>> GetPostById(int? postId);
+        Task<List<Post>> GetPost(int? postId);
         Task<Post> AddEditPost(Post newPost);
     }
 

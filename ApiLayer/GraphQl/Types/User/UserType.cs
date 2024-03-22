@@ -1,9 +1,11 @@
-namespace posts_graphql.api.Types;
-
 using HotChocolate.Types;
+using posts_graphql.api.Types;
+using Posts_graphql.Application.Services;
 using Posts_graphql.Domain.Models;
 
-public class UserType : ObjectType<UserProfile>
+namespace posts_graphql.api.Query
+{
+    public class UserType : ObjectType<UserProfile>
     {
         protected override void Configure(IObjectTypeDescriptor<UserProfile> descriptor)
         {
@@ -11,7 +13,7 @@ public class UserType : ObjectType<UserProfile>
                 .Type<NonNullType<IntType>>()
                 .Name("id")
                 .Description("The unique identifier of the user.");
-            
+
             descriptor.Field(u => u.Email)
                 .Type<NonNullType<StringType>>()
                 .Name("email")
@@ -53,10 +55,33 @@ public class UserType : ObjectType<UserProfile>
                 .Type<NonNullType<StringType>>()
                 .Name("FlgDelete")
                 .Description("FlgDelete is a boolean to represent state of user deleted or not.");
-          
+           
+            // descriptor.Field<LoginUserResolver>(x => x.LoginUser(default, default));
 
-            // we can add all other fields as well    
 
+            // descriptor.Field(q => q.GetAllUsers())
+            //     .Type<ListType<UserType>>() 
+            //     .Name("GetAllUsers")
+            //     .Description("Get all users");
         }
     }
 
+    // public class LoginUserResolver
+    // {
+    //     private readonly UserService _UserService;
+
+    //     public LoginUserResolver(UserService userService)
+    //     {
+    //         _UserService = userService;
+    //     }
+    //     public async Task<UserProfile> LoginUser(string email , string password)
+    //     {
+    //         return await _UserService.LoginUserAsync(email,password);
+    //     }
+
+    // }
+
+
+//  IsUserExistsAsync
+
+}

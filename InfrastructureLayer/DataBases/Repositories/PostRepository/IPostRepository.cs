@@ -4,7 +4,7 @@ namespace Posts_graphql.Infrastructure.Repository;
 
 public interface IPostRepository
 {
-    Task<List<Post>> GetPostById(int? id);
+    Task<List<Post>> GetPost(int? id);
     Task<Post> AddEditPost(Post newPost);
    
 }

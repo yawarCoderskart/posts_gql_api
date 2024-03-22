@@ -14,7 +14,7 @@ public class PostRepository : IPostRepository
         dbContext = contextFactory.CreateDbContext();
     }
 
-    public async Task<List<Post>> GetPostById(int? postId)
+    public async Task<List<Post>> GetPost(int? postId)
     {
         try
         {
@@ -38,8 +38,21 @@ public class PostRepository : IPostRepository
     {
         try
         {
-            dbContext.Post.Add(newPost);
-            await dbContext.SaveChangesAsync();
+            if (newPost.Id == null)
+            {
+                dbContext.Post.Add(newPost);
+                await dbContext.SaveChangesAsync();
+
+            }
+            else
+            {
+                var existingPost = await dbContext.Post.FindAsync(newPost.Id);
+                newPost.AddedBy = existingPost.AddedBy;
+                newPost.AddedDateTime = existingPost.AddedDateTime;
+                 dbContext.Entry(existingPost).CurrentValues.SetValues(newPost);
+                // dbContext.Entry(newPost).State = EntityState.Modified;
+                await dbContext.SaveChangesAsync();
+            }
             return newPost;
         }
         catch (Exception ex)

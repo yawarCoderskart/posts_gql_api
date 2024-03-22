@@ -11,14 +11,20 @@ builder.Services.AddPooledDbContextFactory<PostGrapghQlDbContext>(options =>
     options.UseSqlServer(cs);
 });
 
-builder.Services.AddGraphQLServer()
-    .AddQueryType<UserQuery>()
-    .AddQueryType<PostQuery>()
-    .AddQueryType<NotificationQuery>()
-    .AddMutationType<RegisterUserMutationType>()
-    .AddMutationType<AddEditPostMutationType>()
-    .AddMutationType<AddEditNotificationMutationType>();
-  
+// builder.Services.AddGraphQLServer()
+//     .AddQueryType<UserQuery>()
+//     .AddQueryType<PostQuery>()
+//     .AddQueryType<NotificationQuery>()
+//     .AddMutationType<RegisterUserMutationType>()
+//     .AddMutationType<AddEditPostMutationType>()
+//     .AddMutationType<AddEditNotificationMutationType>();
+   builder.Services.AddGraphQL(x => SchemaBuilder.New()
+                                        .AddServices(x)
+                                        .AddType<PostType>()
+                                        .AddQueryType<Query>() 
+                                        .AddMutationType<Mutation>() 
+                                        .Create()
+                                        );
 
 
 builder.Services.AddScoped<UserService>();
