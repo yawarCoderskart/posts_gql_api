@@ -45,9 +45,12 @@ public class NotificationRepository : INotificationRepository
             }
             else
             {
-                var existingNotification = await dbContext.Notification.FindAsync(newNotification.Id);
+                var existingNotification = await dbContext.Notification.FirstOrDefaultAsync(n => n.Id == newNotification.Id && n.FlgDelete == false);
                 newNotification.AddedBy = existingNotification.AddedBy;
                 newNotification.AddedDateTime = existingNotification.AddedDateTime;
+                 if(newNotification.FlgDelete == null){
+                    newNotification.FlgDelete = false;
+                }
                 dbContext.Entry(existingNotification).CurrentValues.SetValues(newNotification);
                 await dbContext.SaveChangesAsync();
             }

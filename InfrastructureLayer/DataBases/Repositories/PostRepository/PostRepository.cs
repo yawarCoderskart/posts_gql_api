@@ -46,9 +46,12 @@ public class PostRepository : IPostRepository
             }
             else
             {
-                var existingPost = await dbContext.Post.FindAsync(newPost.Id);
+                var existingPost = await dbContext.Post.FirstOrDefaultAsync(p => p.Id == newPost.Id && p.FlgDelete == false);
                 newPost.AddedBy = existingPost.AddedBy;
                 newPost.AddedDateTime = existingPost.AddedDateTime;
+                if(newPost.FlgDelete != true){
+                    newPost.FlgDelete = false;
+                }
                  dbContext.Entry(existingPost).CurrentValues.SetValues(newPost);
                 // dbContext.Entry(newPost).State = EntityState.Modified;
                 await dbContext.SaveChangesAsync();
